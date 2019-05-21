@@ -33,5 +33,13 @@ public class TestAlarm {
         assertEquals(true, alarm.isAlarmOn());
     }
 
+    @Test
+    public void testAlarmOnWhenPressureTooHigh() {
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn((double) 30);
+
+        alarm.check();
+        assertEquals(true, alarm.isAlarmOn());
+    }
+
 
 }
