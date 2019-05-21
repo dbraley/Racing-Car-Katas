@@ -43,7 +43,7 @@ public class TestAlarm {
 
     @Test
     public void testAlarmOffWhenPressureBottomBoundary() {
-        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn((double) 17);
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.LowPressureThreshold);
 
         alarm.check();
         assertEquals(false, alarm.isAlarmOn());
@@ -51,7 +51,39 @@ public class TestAlarm {
 
     @Test
     public void testAlarmOffWhenPressureUpperBoundary() {
-        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn((double) 21);
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.HighPressureThreshold);
+
+        alarm.check();
+        assertEquals(false, alarm.isAlarmOn());
+    }
+
+    @Test
+    public void testAlarmOffWhenPressureBelowBottomBoundary() {
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.LowPressureThreshold - .1);
+
+        alarm.check();
+        assertEquals(true, alarm.isAlarmOn());
+    }
+
+    @Test
+    public void testAlarmOffWhenPressureAboveBottomBoundary() {
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.LowPressureThreshold + .1);
+
+        alarm.check();
+        assertEquals(false, alarm.isAlarmOn());
+    }
+
+    @Test
+    public void testAlarmOffWhenPressureAboveUpperBoundary() {
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.HighPressureThreshold + .1);
+
+        alarm.check();
+        assertEquals(true, alarm.isAlarmOn());
+    }
+
+    @Test
+    public void testAlarmOffWhenPressureBelowUpperBoundary() {
+        Mockito.when(sensor.popNextPressurePsiValue()).thenReturn(Alarm.HighPressureThreshold - .1);
 
         alarm.check();
         assertEquals(false, alarm.isAlarmOn());
