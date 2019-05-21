@@ -89,4 +89,16 @@ public class TestAlarm {
         assertEquals(false, alarm.isAlarmOn());
     }
 
+    @Test
+    public void testAlarmGoesOffStaysOff() {
+        Mockito.when(sensor.popNextPressurePsiValue())
+                .thenReturn(Alarm.HighPressureThreshold + .1)
+                .thenReturn(Alarm.HighPressureThreshold - .1);
+
+        alarm.check();
+        assertEquals(true, alarm.isAlarmOn());
+
+        alarm.check();
+        assertEquals(true, alarm.isAlarmOn());
+    }
 }
